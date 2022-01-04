@@ -71,6 +71,15 @@ class App extends React.Component {
     });
   }
 
+  rotateOption(event) {
+    this.setState((prevState) => {
+      const tempOption = prevState.leftOption;
+      return {
+        leftOption: prevState.rightOption,
+        rightOption: tempOption
+      }
+    });
+  }
 
   render() {
     return (
@@ -83,7 +92,7 @@ class App extends React.Component {
           </div>
 
           <div className="flex items-center">
-            <button className="font-bold p-3 rounded-full ring-2 ring-indigo-600 bg-white active:bg-indigo-600 text-indigo-500 active:text-white hover:bg-indigo-200 h-14 w-14">
+            <button className="font-bold p-3 rounded-full ring-2 ring-indigo-600 bg-white active:bg-indigo-600 text-indigo-500 active:text-white hover:bg-indigo-200 h-14 w-14" onClick={this.rotateOption.bind(this)}>
               <MdSync size="lg"/>
 
             </button>
