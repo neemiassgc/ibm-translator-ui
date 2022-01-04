@@ -1,5 +1,4 @@
 import React from 'react';
-import { GrSync } from 'react-icons/gr';
 import { BsTranslate } from 'react-icons/bs';
 import { MdSync } from 'react-icons/md';
 
@@ -22,7 +21,6 @@ class Field extends React.Component {
     this.setState({
       currentText: event.target.value
     })
-
   }
 
   render() {
@@ -35,12 +33,12 @@ class Field extends React.Component {
     return (
       <div className="w-full border-2 border-stone-200 rounded-md shadow-md">
        <div className="border-b-2 border-stone-100 w-full">
-          <select className="bg-white text-xl text-center font-mono font-medium block my-auto p-3 w-full">
+          <select label={this.props.label} value={this.props.currentValue} className="bg-white text-xl text-center font-mono font-medium block my-auto p-3 w-full" onChange={this.props.changeOption}>
             {options}
           </select>
        </div>
         <div className="p-2">
-          <textarea disabled={this.props.disabled} className="w-full h-32 bg-white outline-none" style={{"resize": "none"}}></textarea>
+          <textarea onChange={this.changeText.bind(this)} disabled={this.props.disabled} className="w-full h-32 bg-white outline-none" style={{"resize": "none"}}></textarea>
         </div>
         <div className="p-1 text-right mx-2">
           {this.state.currentText.length}/500
@@ -60,6 +58,20 @@ class App extends React.Component {
     }
   }
 
+  changeOption(event) {
+    if (event.target.attributes.label.value === "left") {
+      this.setState({
+        leftOption: event.target.value
+      });
+      return;
+    }
+
+    this.setState({
+      rightOption: event.target.value
+    });
+  }
+
+
   render() {
     return (
       <div className="container mx-auto">
@@ -67,7 +79,7 @@ class App extends React.Component {
         
         <div className="flex w-full mt-5">
           <div className="p-10 flex-grow">
-            <Field label="left"> </Field>
+            <Field label="left" currentValue={this.state.leftOption} changeOption={this.changeOption.bind(this)} disabled={false}> </Field>
           </div>
 
           <div className="flex items-center">
@@ -78,7 +90,7 @@ class App extends React.Component {
           </div>
 
           <div className="p-10 flex-grow">
-            <Field label="right" disabled={true}> </Field>
+            <Field label="right" currentValue={this.state.rightOption}  changeOption={this.changeOption.bind(this)} disabled={true}> </Field>
           </div>
         </div>
 
