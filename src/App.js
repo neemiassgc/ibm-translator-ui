@@ -4,10 +4,14 @@ import { MdSync } from 'react-icons/md';
 import loader from "./ball-triangle.svg";
 
 function Header() {
-  return (<div className="w-full p-5 shadow-md border-b-2 shadow-stone-100">
-    <BsTranslate size="3rem" className="ml-10"/>
-  </div>)
-
+  return (
+    <div className="w-full p-5 shadow-md border-b-2 bg-indigo-600">
+      <div className="flex justify-center">
+        <BsTranslate size="2.5rem" className="text-white"/>
+        <h2 className="text-white text-3xl font-bold ml-5">IBM Translator</h2>
+      </div>
+    </div>
+  )
 }
 
 class Field extends React.Component {
@@ -95,7 +99,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="container mx-auto">
+      <div className="container min-w-full min-h-screen relative">
         <Header />
         
         <div className="flex w-full mt-5">
