@@ -14,6 +14,14 @@ function Header() {
   )
 }
 
+function Footer() {
+  return (
+    <div className="w-full p-5 bg-white absolute bottom-0">
+      <h1 className="text-indigo-600 text-center font-bold">&copy; Created by Neemias Santos - 2022</h1>
+    </div>
+  )
+}
+
 class Field extends React.Component {
   constructor(props) {
     super(props)
@@ -125,6 +133,8 @@ class App extends React.Component {
             (<button className="bg-white text-indigo-600 ring-2 ring-indigo-600 active:bg-indigo-600 active:text-white hover:bg-indigo-200 font-medium text-lg tracking-wide py-2 px-4 rounded" onClick={this.turnOnSpinner.bind(this)}>Translate</button>)
           }
         </div>
+
+        <Footer />
       </div>
     );
   }
