@@ -1,12 +1,13 @@
 import React from 'react';
 import { BsTranslate } from 'react-icons/bs';
 import { MdSync } from 'react-icons/md';
-
+import loader from "./ball-triangle.svg";
 
 function Header() {
   return (<div className="w-full p-5 shadow-md border-b-2 shadow-stone-100">
     <BsTranslate size="3rem" className="ml-10"/>
   </div>)
+
 }
 
 class Field extends React.Component {
@@ -54,11 +55,14 @@ class App extends React.Component {
     this.state = {
       leftText: "",
       leftOption: "",
-      rightOption: ""
+      rightOption: "",
+      spinning: false
     }
   }
 
   changeOption(event) {
+    this.turnOnSpinner();
+
     if (event.target.attributes.label.value === "left") {
       this.setState({
         leftOption: event.target.value
@@ -77,6 +81,14 @@ class App extends React.Component {
       return {
         leftOption: prevState.rightOption,
         rightOption: tempOption
+      }
+    });
+  }
+
+  turnOnSpinner() {
+    this.setState( (prevState) => {
+      return {
+        spinning: !prevState.spinning
       }
     });
   }
@@ -104,7 +116,10 @@ class App extends React.Component {
         </div>
 
         <div className="mt-2 w-full text-center p-3">
-          <button className="bg-white text-indigo-600 ring-2 ring-indigo-600 active:bg-indigo-600 active:text-white hover:bg-indigo-200 font-medium text-lg tracking-wide py-2 px-4 rounded">Translate</button>
+          {
+            this.state.spinning ? (<img className="mx-auto" src={loader} alt="loader" />) :
+            (<button className="bg-white text-indigo-600 ring-2 ring-indigo-600 active:bg-indigo-600 active:text-white hover:bg-indigo-200 font-medium text-lg tracking-wide py-2 px-4 rounded" onClick={this.turnOnSpinner.bind(this)}>Translate</button>)
+          }
         </div>
       </div>
     );
