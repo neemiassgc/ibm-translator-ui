@@ -83,7 +83,7 @@ function MainButton(props) {
     ]
     
     component =(
-      <button className={classes.join(" ")} onClick={props.turnOnSpinner}>
+      <button className={classes.join(" ")} onClick={props.toggleSpinner}>
         Translate
       </button>
     )
@@ -108,7 +108,7 @@ class App extends React.Component {
   }
 
   changeOption(event) {
-    this.turnOnSpinner();
+    this.toggleSpinner();
 
     if (event.target.attributes.label.value === "left") {
       this.setState({
@@ -132,7 +132,7 @@ class App extends React.Component {
     });
   }
 
-  turnOnSpinner() {
+  toggleSpinner() {
     this.setState( (prevState) => {
       return {
         spinning: !prevState.spinning
@@ -161,7 +161,7 @@ class App extends React.Component {
           </div>
         </div>
 
-        <MainButton spinning={this.state.spinning} turnOnSpinner={this.turnOnSpinner.bind(this)} />
+        <MainButton spinning={this.state.spinning} toggleSpinner={this.toggleSpinner.bind(this)} />
 
         <Footer />
       </div>
