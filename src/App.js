@@ -2,6 +2,7 @@ import React from 'react';
 import { BsTranslate } from 'react-icons/bs';
 import { MdSync } from 'react-icons/md';
 import loader from "./ball-triangle.svg";
+import * as translator from "./services/translator";
 
 function Header() {
   return (
@@ -27,7 +28,23 @@ class Field extends React.Component {
     super(props)
     this.state = {
       currentText: "",
+      languageOptions: null
     }
+  }
+
+  componentDidMount() {
+    translator.fetchLanguages()
+      .then(data => {
+        const options = data
+          .map(language => language.nativeLanguageName)
+          .sort()
+          .map((name, index) => (<option key={index + 1} value={name}>{name}</option>));
+
+        this.setState({
+          languageOptions: options
+        })
+      })
+      .catch(console.log);
   }
 
   changeText(event) {
@@ -37,17 +54,11 @@ class Field extends React.Component {
   }
 
   render() {
-    const options = []
-    options[0] = <option key="1" value="Canada">Canada</option>
-    options[1] = <option key="2" value="Japan">Japan</option>
-    options[2] = <option key="3" value="Brazil">Brazil</option>
-    options[3] = <option key="4" value="Italy">Italy</option>
-
     return (
       <div className="w-full border-2 border-stone-200 rounded-md shadow-md">
        <div className="border-b-2 border-stone-100 w-full">
           <select label={this.props.label} value={this.props.currentValue} className="bg-white text-xl text-center font-mono font-medium block my-auto p-3 w-full" onChange={this.props.changeOption}>
-            {options}
+            {this.state.languageOptions}
           </select>
        </div>
         <div className="p-2">
