@@ -61,6 +61,41 @@ class Field extends React.Component {
   }
 }
 
+function MainButton(props) {
+  let component = null
+
+  if (props.spinning) component = (<img className="mx-auto" src={loader} alt="loader" />)
+  else {
+    const classes = [
+      "bg-white",
+      "text-indigo-600",
+      "ring-2",
+      "ring-indigo-600",
+      "active:bg-indigo-600",
+      "active:text-white",
+      "hover:bg-indigo-200",
+      "font-medium",
+      "text-lg",
+      "tracking-wide",
+      "py-2",
+      "px-4",
+      "rounded"
+    ]
+    
+    component =(
+      <button className={classes.join(" ")} onClick={props.turnOnSpinner}>
+        Translate
+      </button>
+    )
+  }
+
+  return (
+    <div className="mt-2 w-full text-center p-3 static">
+      {component}
+    </div>
+  )
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -126,12 +161,7 @@ class App extends React.Component {
           </div>
         </div>
 
-        <div className="mt-2 w-full text-center p-3 mb-16 md:mb-0">
-          {
-            this.state.spinning ? (<img className="mx-auto" src={loader} alt="loader" />) :
-            (<button className="bg-white text-indigo-600 ring-2 ring-indigo-600 active:bg-indigo-600 active:text-white hover:bg-indigo-200 font-medium text-lg tracking-wide py-2 px-4 rounded" onClick={this.turnOnSpinner.bind(this)}>Translate</button>)
-          }
-        </div>
+        <MainButton spinning={this.state.spinning} turnOnSpinner={this.turnOnSpinner.bind(this)} />
 
         <Footer />
       </div>
