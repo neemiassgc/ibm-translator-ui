@@ -16,7 +16,7 @@ function Header() {
 
 function Footer() {
   return (
-    <div className="w-full p-5 bg-white absolute bottom-0">
+    <div className="w-full p-5 bg-white static md:absolute md:bottom-0">
       <h1 className="text-indigo-600 text-center font-bold">&copy; Created by Neemias Santos - 2022</h1>
     </div>
   )
@@ -107,18 +107,17 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="container min-w-full min-h-screen relative">
+      <div className="container min-w-full">
         <Header />
         
-        <div className="flex w-full mt-5">
+        <div className="flex-cols md:flex w-full mt-5">
           <div className="p-10 flex-grow">
             <Field label="left" currentValue={this.state.leftOption} changeOption={this.changeOption.bind(this)} disabled={false}> </Field>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex justify-center md:items-center">
             <button className="font-bold p-3 rounded-full ring-2 ring-indigo-600 bg-white active:bg-indigo-600 text-indigo-500 active:text-white hover:bg-indigo-200 h-14 w-14" onClick={this.rotateOption.bind(this)}>
               <MdSync size="lg"/>
-
             </button>
           </div>
 
@@ -127,7 +126,7 @@ class App extends React.Component {
           </div>
         </div>
 
-        <div className="mt-2 w-full text-center p-3">
+        <div className="mt-2 w-full text-center p-3 mb-16 md:mb-0">
           {
             this.state.spinning ? (<img className="mx-auto" src={loader} alt="loader" />) :
             (<button className="bg-white text-indigo-600 ring-2 ring-indigo-600 active:bg-indigo-600 active:text-white hover:bg-indigo-200 font-medium text-lg tracking-wide py-2 px-4 rounded" onClick={this.turnOnSpinner.bind(this)}>Translate</button>)
