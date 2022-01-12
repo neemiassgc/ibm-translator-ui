@@ -35,7 +35,7 @@ class Field extends React.Component {
   componentDidMount() {
     translator.fetchLanguages()
       .then(data => {
-        const options = data.map((name, index) => (<option key={index + 1} value={name}>{name}</option>));
+        const options = data.map((lang, index) => (<option code={lang.code} key={index + 1} value={lang.name}>{lang.name}</option>));
         this.setState({ languageOptions: options })
       })
       .catch(console.log);
@@ -51,7 +51,7 @@ class Field extends React.Component {
     return (
       <div className="w-full border-2 border-stone-200 rounded-md shadow-md">
        <div className="border-b-2 border-stone-100 w-full">
-          <select label={this.props.label} value={this.props.currentValue} className="bg-white text-xl text-center font-mono font-medium block my-auto p-3 w-full" onChange={this.props.changeOption}>
+          <select label={this.props.label} code={this.props.currentCode} value={this.props.currentValue} className="bg-white text-xl text-center font-mono font-medium block my-auto p-3 w-full" onChange={this.props.changeOption}>
             {this.state.languageOptions}
           </select>
        </div>
@@ -105,27 +105,37 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      rightText: "",
-      leftText: "",
-      leftOption: "English",
-      rightOption: "Português",
+      leftField: {
+        option: "English",
+        text: "",
+        code: "en",
+        disabled: false
+      },
+      rightField: {
+        option: "Português",
+        text: "",
+        code: "pt",
+        disabled: true
+      },
       spinning: false
     }
   }
-
-  componentDidMount() {
   
-  }
-
   changeOption(event) {
-    const nextState = {}
+    const nextState = {
+      leftField: this.state.leftField,
+      rightField: this.state.rightField
+    }
 
     if (event.target.attributes.label.value === "left") {
       this.setState(prevState => {
-        if (prevState.rightOption === event.target.value)
-          nextState.rightOption = prevState.leftOption;
+        if (prevState.rightField.option === event.target.value) {
+          nextState.rightField.option = prevState.leftField.option;
+          nextState.rightField.code = prevState.leftField.code;
+        }
 
-        nextState.leftOption = event.target.value;
+        nextState.leftField.option = event.target.value;
+        nextState.leftField.code = event.target.attributes.code.value;
         return nextState;
       });
 
@@ -133,20 +143,27 @@ class App extends React.Component {
     }
 
     this.setState(prevState => {
-      if (prevState.leftOption === event.target.value)
-        nextState.leftOption = prevState.rightOption;
+      if (prevState.leftField.option === event.target.value) {
+        nextState.leftField.option = prevState.rightField.option;
+        nextState.leftField.code = prevState.rightField.code;
+      }
 
-      nextState.rightOption = event.target.value;
+      nextState.rightField.option = event.target.value;
+      nextState.rightField.code = event.target.attributes.code.value;
       return nextState;
     });
   }
 
   rotateOption(event) {
     this.setState((prevState) => {
-      const tempOption = prevState.leftOption;
+      const tempOption = prevState.leftField.option;
       return {
-        leftOption: prevState.rightOption,
-        rightOption: tempOption
+        leftField: {
+          option: prevState.rightField.option,
+        },
+        rightField: {
+          option: tempOption
+        }
       }
     });
   }
@@ -158,6 +175,7 @@ class App extends React.Component {
       }
     });
   }
+  
 
   render() {
     return (
@@ -166,7 +184,7 @@ class App extends React.Component {
         
         <div className="flex-cols md:flex w-full mt-5">
           <div className="p-10 flex-grow">
-            <Field label="left" currentValue={this.state.leftOption} changeOption={this.changeOption.bind(this)} disabled={false}> </Field>
+            <Field label="left" code={this.state.leftField.code} currentValue={this.state.leftField.option} changeOption={this.changeOption.bind(this)} disabled={this.state.leftField.disabled}> </Field>
           </div>
 
           <div className="flex justify-center md:items-center">
@@ -176,7 +194,7 @@ class App extends React.Component {
           </div>
 
           <div className="p-10 flex-grow">
-            <Field label="right" currentValue={this.state.rightOption}  changeOption={this.changeOption.bind(this)} disabled={true}> </Field>
+            <Field label="right" code={this.state.rightField.code} currentValue={this.state.rightField.option}  changeOption={this.changeOption.bind(this)} disabled={this.state.rightField.disabled}> </Field>
           </div>
         </div>
 
