@@ -35,14 +35,8 @@ class Field extends React.Component {
   componentDidMount() {
     translator.fetchLanguages()
       .then(data => {
-        const options = data
-          .map(language => language.nativeLanguageName)
-          .sort()
-          .map((name, index) => (<option key={index + 1} value={name}>{name}</option>));
-
-        this.setState({
-          languageOptions: options
-        })
+        const options = data.map((name, index) => (<option key={index + 1} value={name}>{name}</option>));
+        this.setState({ languageOptions: options })
       })
       .catch(console.log);
   }
@@ -134,7 +128,7 @@ class App extends React.Component {
         nextState.leftOption = event.target.value;
         return nextState;
       });
-      
+
       return;
     }
 
