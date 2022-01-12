@@ -111,25 +111,39 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      rightText: "",
       leftText: "",
-      leftOption: "",
-      rightOption: "",
+      leftOption: "English",
+      rightOption: "Português",
       spinning: false
     }
   }
 
+  componentDidMount() {
+  
+  }
+
   changeOption(event) {
-    this.toggleSpinner();
+    const nextState = {}
 
     if (event.target.attributes.label.value === "left") {
-      this.setState({
-        leftOption: event.target.value
+      this.setState(prevState => {
+        if (prevState.rightOption === event.target.value)
+          nextState.rightOption = prevState.leftOption;
+
+        nextState.leftOption = event.target.value;
+        return nextState;
       });
+      
       return;
     }
 
-    this.setState({
-      rightOption: event.target.value
+    this.setState(prevState => {
+      if (prevState.leftOption === event.target.value)
+        nextState.leftOption = prevState.rightOption;
+
+      nextState.rightOption = event.target.value;
+      return nextState;
     });
   }
 
