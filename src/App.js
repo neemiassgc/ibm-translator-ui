@@ -162,7 +162,7 @@ class App extends React.Component {
           nextState.leftField.text
         ] = [
           event.target.value,
-          event.target.attributes.code.value,
+          event.target.selectedOptions[0].attributes.code.value,
           ""
         ]
 
@@ -191,7 +191,7 @@ class App extends React.Component {
         nextState.rightField.text
       ] = [
         event.target.value,
-        event.target.attributes.code.value,
+        event.target.selectedOptions[0].attributes.code.value,
         ""
       ]
 
