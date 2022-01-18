@@ -1,7 +1,8 @@
 import React from 'react';
 import { BsTranslate } from 'react-icons/bs';
 import { MdSync } from 'react-icons/md';
-import loader from "./ball-triangle.svg";
+import mainButtonLoader from "./ball-triangle.svg";
+import swapButtonLoader from "./three-dots.svg";
 import * as translator from "./services/translator";
 
 function Header() {
@@ -46,12 +47,20 @@ class Field extends React.Component {
   }
 
   render() {
+    let button = null;
+    if (this.state.languageOptions.length > 0) {
+      button = (
+        <select code={this.props.args.code} value={this.props.args.option} className="bg-white text-xl text-center font-mono font-medium block my-auto p-3 w-full" onChange={this.props.onChangeLanguageOption}>
+          {this.state.languageOptions}
+        </select>
+      )
+    }
+    else button = (<img src={swapButtonLoader} className="mx-auto py-3" alt="Loading..."/>)
+
     return (
       <div className="w-full border-2 border-stone-200 rounded-md shadow-md">
        <div className="border-b-2 border-stone-100 w-full">
-          <select code={this.props.args.code} value={this.props.args.option} className="bg-white text-xl text-center font-mono font-medium block my-auto p-3 w-full" onChange={this.props.onChangeLanguageOption}>
-            {this.state.languageOptions}
-          </select>
+          {button}
        </div>
         <div className="p-2">
           <textarea disabled={this.props.args.disabled} onChange={this.props.onChangeText} value={this.props.args.text} className="w-full h-32 bg-white outline-none" style={{"resize": "none"}}></textarea>
@@ -75,7 +84,7 @@ function SwapButton(props) {
 function MainButton(props) {
   let component = null
 
-  if (props.spinning) component = (<img className="mx-auto" src={loader} alt="loader" />)
+  if (props.spinning) component = (<img className="mx-auto" src={mainButtonLoader} alt="mainButtonLoader" />)
   else {
     const classes = [
       "bg-white",
@@ -94,7 +103,7 @@ function MainButton(props) {
     ]
     
     component =(
-      <button className={classes.join(" ")} onClick={props.toggleSpinner}>
+      <button className={classes.join(" ")} onClick={props.onClick}>
         Translate
       </button>
     )
@@ -234,6 +243,28 @@ class App extends React.Component {
     });
   }
 
+  translate() {
+    this.toggleSpinner()
+
+    translator.translate(this.state.leftField.code, this.state.rightField.code, this.state.leftField.text)
+      .then(data => {
+        this.setState(prevState => {
+          return {
+            rightField: {...prevState.rightField, text: data},
+          }
+        })
+        this.toggleSpinner()
+      })
+      .catch(err => {
+        this.toggleSpinner()
+        this.setState(prevState => {
+          return {
+            rightField: {...prevState.rightField, text: err.message},
+          }
+        })
+      })
+  }
+
   render() {
     return (
       <div className="container min-w-full">
@@ -253,7 +284,7 @@ class App extends React.Component {
           </div>
         </div>
 
-        <MainButton spinning={this.state.spinning} toggleSpinner={this.toggleSpinner.bind(this)} />
+        <MainButton spinning={this.state.spinning} onClick={this.translate.bind(this)}/>
 
         <Footer />
       </div>
