@@ -49,7 +49,7 @@ class Field extends React.Component {
     return (
       <div className="w-full border-2 border-stone-200 rounded-md shadow-md">
        <div className="border-b-2 border-stone-100 w-full">
-          <select code={this.props.args.code} value={this.props.args.option} className="bg-white text-xl text-center font-mono font-medium block my-auto p-3 w-full" onChange={this.props.changeOption}>
+          <select code={this.props.args.code} value={this.props.args.option} className="bg-white text-xl text-center font-mono font-medium block my-auto p-3 w-full" onChange={this.props.onChangeLanguageOption}>
             {this.state.languageOptions}
           </select>
        </div>
@@ -119,7 +119,7 @@ class App extends React.Component {
     }
   }
   
-  changeOption(label, event) {
+  handleLanguageOption(label, event) {
     const nextState = {
       leftField: {...this.state.leftField},
       rightField: {...this.state.rightField}
@@ -225,7 +225,7 @@ class App extends React.Component {
         
         <div className="flex-cols md:flex w-full mt-5">
           <div className="p-10 flex-grow">
-            <Field args={this.state.leftField} changeOption={this.changeOption.bind(this, "left")}> </Field>
+            <Field args={this.state.leftField} onChangeLanguageOption={this.handleLanguageOption.bind(this, "left")}> </Field>
           </div>
 
           <div className="flex justify-center md:items-center">
@@ -235,7 +235,7 @@ class App extends React.Component {
           </div>
 
           <div className="p-10 flex-grow">
-            <Field args={this.state.rightField} changeOption={this.changeOption.bind(this, "right")}> </Field>
+            <Field args={this.state.rightField} onChangeLanguageOption={this.handleLanguageOption.bind(this, "right")}> </Field>
           </div>
         </div>
 
