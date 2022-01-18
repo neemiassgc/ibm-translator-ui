@@ -183,17 +183,27 @@ class App extends React.Component {
   }
 
   rotateOption() {
+    const nextState = {
+      leftField: {...this.state.leftField},
+      rightField: {...this.state.rightField}
+    }
+
     this.setState(prevState => {
-      const nextState = {
-        leftField: {...prevState.leftField},
-        rightField: {...prevState.rightField}
-      }
-      nextState.leftField.option = prevState.rightField.option;
-      nextState.leftField.code = prevState.rightField.code;
-      nextState.leftField.text = prevState.rightField.text;
-      nextState.rightField.option = prevState.leftField.option;
-      nextState.rightField.code = prevState.leftField.code;
-      nextState.rightField.text = prevState.leftField.text;
+      [
+        nextState.leftField.option,
+        nextState.leftField.code,
+        nextState.leftField.text,
+        nextState.rightField.option,
+        nextState.rightField.code,
+        nextState.rightField.text
+      ] = [
+        prevState.rightField.option,
+        prevState.rightField.code,
+        prevState.rightField.text,
+        prevState.leftField.option,
+        prevState.leftField.code,
+        prevState.leftField.text
+      ]
 
       return nextState
     });
