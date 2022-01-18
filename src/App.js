@@ -182,7 +182,7 @@ class App extends React.Component {
     });
   }
 
-  rotateOption() {
+  handleRotateLanguageOption() {
     const nextState = {
       leftField: {...this.state.leftField},
       rightField: {...this.state.rightField}
@@ -229,7 +229,7 @@ class App extends React.Component {
           </div>
 
           <div className="flex justify-center md:items-center">
-            <button className="font-bold p-3 rounded-full ring-2 ring-indigo-600 bg-white active:bg-indigo-600 text-indigo-500 active:text-white hover:bg-indigo-200 h-14 w-14" onClick={this.rotateOption.bind(this)}>
+            <button className="font-bold p-3 rounded-full ring-2 ring-indigo-600 bg-white active:bg-indigo-600 text-indigo-500 active:text-white hover:bg-indigo-200 h-14 w-14" onClick={this.handleRotateLanguageOption.bind(this)}>
               <MdSync size="lg"/>
             </button>
           </div>
