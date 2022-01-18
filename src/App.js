@@ -50,7 +50,7 @@ class Field extends React.Component {
     let button = null;
     if (this.state.languageOptions.length > 0) {
       button = (
-        <select code={this.props.args.code} value={this.props.args.option} className="bg-white text-xl text-center font-mono font-medium block my-auto p-3 w-full" onChange={this.props.onChangeLanguageOption}>
+        <select code={this.props.args.code} value={this.props.args.option} className="bg-white text-zinc-700 text-xl text-center font-medium block my-auto p-3 w-full" onChange={this.props.onChangeLanguageOption}>
           {this.state.languageOptions}
         </select>
       )
@@ -63,7 +63,7 @@ class Field extends React.Component {
           {button}
        </div>
         <div className="p-2">
-          <textarea disabled={this.props.args.disabled} onChange={this.props.onChangeText} value={this.props.args.text} className="w-full h-32 bg-white outline-none" style={{"resize": "none"}}></textarea>
+          <textarea disabled={this.props.args.disabled} onChange={this.props.onChangeText} value={this.props.args.text} className="w-full h-44 bg-white outline-none p-4 text-zinc-700" style={{"resize": "none"}}></textarea>
         </div>
         <div className="p-1 text-right mx-2">
           {this.props.args.text.length}/500
