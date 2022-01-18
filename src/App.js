@@ -54,7 +54,7 @@ class Field extends React.Component {
           </select>
        </div>
         <div className="p-2">
-          <textarea disabled={this.props.args.disabled} className="w-full h-32 bg-white outline-none" style={{"resize": "none"}}></textarea>
+          <textarea disabled={this.props.args.disabled} onChange={this.props.onChangeText} value={this.props.args.text} className="w-full h-32 bg-white outline-none" style={{"resize": "none"}}></textarea>
         </div>
         <div className="p-1 text-right mx-2">
           {this.props.args.text.length}/500
@@ -217,6 +217,14 @@ class App extends React.Component {
     });
   }
   
+  handleChangeText(label, event) {
+    this.setState(prevState => {
+      if (label === "left")
+        return {leftField: {...prevState.leftField, text: event.target.value}}
+
+      return {rightField: {...prevState.rightField, text: event.target.value}}
+    });
+  }
 
   render() {
     return (
@@ -225,7 +233,7 @@ class App extends React.Component {
         
         <div className="flex-cols md:flex w-full mt-5">
           <div className="p-10 flex-grow">
-            <Field args={this.state.leftField} onChangeLanguageOption={this.handleLanguageOption.bind(this, "left")}> </Field>
+            <Field args={this.state.leftField} onChangeLanguageOption={this.handleLanguageOption.bind(this, "left")} onChangeText={this.handleChangeText.bind(this, "left")}> </Field>
           </div>
 
           <div className="flex justify-center md:items-center">
@@ -235,7 +243,7 @@ class App extends React.Component {
           </div>
 
           <div className="p-10 flex-grow">
-            <Field args={this.state.rightField} onChangeLanguageOption={this.handleLanguageOption.bind(this, "right")}> </Field>
+            <Field args={this.state.rightField} onChangeLanguageOption={this.handleLanguageOption.bind(this, "right")} onChangeText={this.handleChangeText.bind(this, "right")}> </Field>
           </div>
         </div>
 
