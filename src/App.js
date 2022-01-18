@@ -27,39 +27,37 @@ class Field extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentText: "",
-      languageOptions: null
+      languageOptions: []
     }
   }
 
   componentDidMount() {
-    translator.fetchLanguages()
-      .then(data => {
-        const options = data.map((lang, index) => (<option code={lang.code} key={index + 1} value={lang.name}>{lang.name}</option>));
-        this.setState({ languageOptions: options })
-      })
-      .catch(console.log);
+    this.fetchOptions()
   }
 
-  changeText(event) {
-    this.setState({
-      currentText: event.target.value
-    })
+  fetchOptions() {
+    translator.fetchLanguages()
+      .then(data => {
+        this.setState({
+          languageOptions: data.map((lang, index) => (<option code={lang.code} key={index + 1} value={lang.name}>{lang.name}</option>))
+        })
+      })
+      .catch(console.log);
   }
 
   render() {
     return (
       <div className="w-full border-2 border-stone-200 rounded-md shadow-md">
        <div className="border-b-2 border-stone-100 w-full">
-          <select label={this.props.label} code={this.props.currentCode} value={this.props.currentValue} className="bg-white text-xl text-center font-mono font-medium block my-auto p-3 w-full" onChange={this.props.changeOption}>
+          <select code={this.props.args.code} value={this.props.args.option} className="bg-white text-xl text-center font-mono font-medium block my-auto p-3 w-full" onChange={this.props.changeOption}>
             {this.state.languageOptions}
           </select>
        </div>
         <div className="p-2">
-          <textarea onChange={this.changeText.bind(this)} disabled={this.props.disabled} className="w-full h-32 bg-white outline-none" style={{"resize": "none"}}></textarea>
+          <textarea disabled={this.props.args.disabled} className="w-full h-32 bg-white outline-none" style={{"resize": "none"}}></textarea>
         </div>
         <div className="p-1 text-right mx-2">
-          {this.state.currentText.length}/500
+          {this.props.args.text.length}/500
         </div>
       </div>
     )
@@ -121,21 +119,36 @@ class App extends React.Component {
     }
   }
   
-  changeOption(event) {
+  changeOption(label, event) {
     const nextState = {
-      leftField: this.state.leftField,
-      rightField: this.state.rightField
+      leftField: {...this.state.leftField},
+      rightField: {...this.state.rightField}
     }
 
-    if (event.target.attributes.label.value === "left") {
+    if (label === "left") {
       this.setState(prevState => {
         if (prevState.rightField.option === event.target.value) {
-          nextState.rightField.option = prevState.leftField.option;
-          nextState.rightField.code = prevState.leftField.code;
+          [
+            nextState.rightField.option,
+            nextState.rightField.code,
+            nextState.rightField.text
+          ] = [
+            prevState.leftField.option,
+            prevState.leftField.code,
+            prevState.leftField.text
+          ]
         }
 
-        nextState.leftField.option = event.target.value;
-        nextState.leftField.code = event.target.attributes.code.value;
+        [
+          nextState.leftField.option,
+          nextState.leftField.code,
+          nextState.leftField.text
+        ] = [
+          event.target.value,
+          event.target.attributes.code.value,
+          ""
+        ]
+
         return nextState;
       });
 
@@ -144,32 +157,50 @@ class App extends React.Component {
 
     this.setState(prevState => {
       if (prevState.leftField.option === event.target.value) {
-        nextState.leftField.option = prevState.rightField.option;
-        nextState.leftField.code = prevState.rightField.code;
+        [
+          nextState.leftField.option,
+          nextState.leftField.code,
+          nextState.leftField.text
+        ] = [
+          prevState.rightField.option,
+          prevState.rightField.code,
+          prevState.rightField.text
+        ]
       }
 
-      nextState.rightField.option = event.target.value;
-      nextState.rightField.code = event.target.attributes.code.value;
+      [
+        nextState.rightField.option,
+        nextState.rightField.code,
+        nextState.rightField.text
+      ] = [
+        event.target.value,
+        event.target.attributes.code.value,
+        ""
+      ]
+
       return nextState;
     });
   }
 
-  rotateOption(event) {
-    this.setState((prevState) => {
-      const tempOption = prevState.leftField.option;
-      return {
-        leftField: {
-          option: prevState.rightField.option,
-        },
-        rightField: {
-          option: tempOption
-        }
+  rotateOption() {
+    this.setState(prevState => {
+      const nextState = {
+        leftField: {...prevState.leftField},
+        rightField: {...prevState.rightField}
       }
+      nextState.leftField.option = prevState.rightField.option;
+      nextState.leftField.code = prevState.rightField.code;
+      nextState.leftField.text = prevState.rightField.text;
+      nextState.rightField.option = prevState.leftField.option;
+      nextState.rightField.code = prevState.leftField.code;
+      nextState.rightField.text = prevState.leftField.text;
+
+      return nextState
     });
   }
 
   toggleSpinner() {
-    this.setState( (prevState) => {
+    this.setState( prevState => {
       return {
         spinning: !prevState.spinning
       }
@@ -184,7 +215,7 @@ class App extends React.Component {
         
         <div className="flex-cols md:flex w-full mt-5">
           <div className="p-10 flex-grow">
-            <Field label="left" code={this.state.leftField.code} currentValue={this.state.leftField.option} changeOption={this.changeOption.bind(this)} disabled={this.state.leftField.disabled}> </Field>
+            <Field args={this.state.leftField} changeOption={this.changeOption.bind(this, "left")}> </Field>
           </div>
 
           <div className="flex justify-center md:items-center">
@@ -194,7 +225,7 @@ class App extends React.Component {
           </div>
 
           <div className="p-10 flex-grow">
-            <Field label="right" code={this.state.rightField.code} currentValue={this.state.rightField.option}  changeOption={this.changeOption.bind(this)} disabled={this.state.rightField.disabled}> </Field>
+            <Field args={this.state.rightField} changeOption={this.changeOption.bind(this, "right")}> </Field>
           </div>
         </div>
 
