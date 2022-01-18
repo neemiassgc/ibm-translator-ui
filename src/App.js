@@ -64,6 +64,14 @@ class Field extends React.Component {
   }
 }
 
+function SwapButton(props) {
+  return (
+    <button disabled={props.spinning} className="font-bold p-3 rounded-full ring-2 ring-indigo-600 bg-white active:bg-indigo-600 text-indigo-500 active:text-white hover:bg-indigo-200 h-14 w-14" onClick={props.onClick}>
+      <MdSync size="lg"/>
+    </button>
+  )
+}
+
 function MainButton(props) {
   let component = null
 
@@ -237,9 +245,7 @@ class App extends React.Component {
           </div>
 
           <div className="flex justify-center md:items-center">
-            <button className="font-bold p-3 rounded-full ring-2 ring-indigo-600 bg-white active:bg-indigo-600 text-indigo-500 active:text-white hover:bg-indigo-200 h-14 w-14" onClick={this.handleRotateLanguageOption.bind(this)}>
-              <MdSync size="lg"/>
-            </button>
+            <SwapButton spinning={this.state.spinning} onClick={this.handleRotateLanguageOption.bind(this)} />
           </div>
 
           <div className="p-10 flex-grow">
