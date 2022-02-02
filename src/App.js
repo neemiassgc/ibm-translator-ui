@@ -7,7 +7,7 @@ import * as translator from "./services/translator";
 
 function Header() {
   return (
-    <div className="w-full p-5 shadow-md border-b-2 bg-indigo-600">
+    <div className="w-full p-5 shadow-lg border-b-2 bg-indigo-600">
       <div className="flex justify-center">
         <BsTranslate size="2.5rem" className="text-white"/>
         <h2 className="text-white text-3xl font-bold ml-5">IBM Translator</h2>
@@ -51,7 +51,7 @@ function Field(props) {
       </textarea>
       </div>
       <div className="p-1 text-right mx-2">
-        {props.args.text.length}/500
+        {props.args.text.length}
       </div>
     </div>
   )
@@ -251,20 +251,15 @@ class App extends React.Component {
   }
 
   translate() {
+    if (this.state.leftField.text.length === 0) return;
+
     this.changeStatus("translating")
 
     translator.translate(this.state.leftField.code, this.state.rightField.code, this.state.leftField.text)
       .then(data => {
         this.setState(prevState => {
           return {
-            rightField: {...prevState.rightField, text: data},
-          }
-        })
-      })
-      .catch(err => {
-        this.setState(prevState => {
-          return {
-            rightField: {...prevState.rightField, text: err.message},
+            rightField: {...prevState.rightField, text: data.translatedText},
           }
         })
       })

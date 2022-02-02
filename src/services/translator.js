@@ -24,16 +24,14 @@ export function translate(from, to, text) {
     net.request({
       method: "POST",
       url: "/translate",
-      params: {
-        from: from,
-        to: to
-      },
       data: {
+        sourceLanguage: from,
+        targetLanguage: to,
         text: text
       },
-      responseType: "text"
+      responseType: "json"
     })
     .then(response => resolve(response.data))
-    .catch(error => reject(error));
+    .catch(error => reject(error.response));
   });
 }
