@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const HOST = "http://localhost:8080"
+const HOST = "https://secret-eyrie-64268.herokuapp.com"
 const net = axios.create({baseURL: HOST});
 
 export default net;
