@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "front-a429f"
+  },
+  "targets": {
+    "front-a429f": {
+      "hosting": {
+        "translator": [
+          "langtranslator"
+        ]
+      }
+    }
+  }
+}
