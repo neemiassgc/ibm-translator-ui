@@ -1,5 +1,5 @@
 # IBM language translator web app :globe_with_meridians:
-A language translator web app made with React and TailwindCss and it hosted on Firebase
+A language translator web app made with React and TailwindCss and it's hosted on Firebase
 
 ![Top language](https://img.shields.io/github/languages/top/neemiassgc/ibm-translator-ui)
 ![Code size](https://img.shields.io/github/languages/code-size/neemiassgc/ibm-translator-ui)
